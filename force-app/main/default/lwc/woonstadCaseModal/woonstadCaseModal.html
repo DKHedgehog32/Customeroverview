@@ -1,0 +1,66 @@
+<template>
+    <div class="woonstad-modal-overlay">
+        <div class="modal-container">
+            <!-- HEADER -->
+            <header class="modal-header">
+                <img src={logoUrl} alt="Woonstad Rotterdam Logo" />
+                <div class="modal-title">Cases ({cases.length})</div>
+            </header>
+
+            <!-- BUTTON -->
+            <div class="new-case-button-container">
+                <lightning-button 
+                    variant="brand" 
+                    label="Nieuwe Zaak" 
+                    onclick={handleNewCase}>
+                </lightning-button>
+            </div>
+
+            <!-- CASE CONTENT -->
+            <div class="case-list">
+                <template for:each={cases} for:item="caseItem">
+                    <div key={caseItem.Id} class="case-card">
+                        <div class="case-reason">{caseItem.Case_Reason__c}</div>
+                        <div><strong>Subject:</strong>
+                            <a href="javascript:void(0);" class="case-subject">{caseItem.Subject}</a>
+                        </div>
+                        <div><strong>Status:</strong> {caseItem.Status}</div>
+                        <div><strong>Date Opened:</strong> {caseItem.CreatedDate}</div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- FOOTER -->
+            <footer class="modal-footer">
+                <lightning-button variant="neutral" label="Sluiten" onclick={handleClose}></lightning-button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- FLOW MODAL -->
+    <template if:true={showFlowModal}>
+        <section class="flow-modal-backdrop">
+            <div class="flow-modal">
+                <!-- FLOW HEADER -->
+                <header class="modal-header flow-header">
+                    <img src={logoUrl} alt="Woonstad Rotterdam Logo" />
+                    <div class="modal-title">Nieuwe Zaak</div>
+                </header>
+
+                <!-- FLOW BODY -->
+                <div class="flow-body">
+                    <lightning-flow
+                        flow-api-name="Screen_Flow_Create_New_Request_Case"
+                        flow-input-variables={flowInput}
+                        onstatuschange={handleFlowStatusChange}>
+                    </lightning-flow>
+                </div>
+
+                <!-- FLOW FOOTER -->
+                <footer class="modal-footer">
+                    <lightning-button variant="neutral" label="Annuleer" onclick={closeFlowModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+    </template>
+</template>

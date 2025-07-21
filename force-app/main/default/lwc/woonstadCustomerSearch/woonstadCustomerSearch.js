@@ -25,7 +25,10 @@ export default class WoonstadCustomerSearch extends LightningElement {
     // Perform search using Apex method
     searchAccounts() {
         const input = this.searchTerm?.trim();
+        console.log('🔍 Starting search with input:', input);
+
         if (!input || input.length < 3) {
+            console.log('⚠️ Search term too short or empty.');
             this.accounts = [];
             this.noResults = false;
             return;
@@ -33,10 +36,9 @@ export default class WoonstadCustomerSearch extends LightningElement {
 
         searchAccountsByName({ name: input })
             .then(result => {
-                console.log('✔️ Apex result:', JSON.stringify(result)); // Optional debug
+                console.log('📦 Apex result received:', result);
 
-                // ❗ FIXED: Removed broken sort on CreatedDate (was causing result to fail silently)
-                const sorted = result; // or use .sort((a, b) => a.Name.localeCompare(b.Name)) if needed
+                const sorted = result;
 
                 this.accounts = sorted.map(acc => {
                     let caseTooltip = 'Geen open zaken gevonden.';
@@ -54,17 +56,17 @@ export default class WoonstadCustomerSearch extends LightningElement {
                         MaskedIban: acc.MaskedIban || '',
                         AddressName: acc.AddressName || '',
                         PostalCode: acc.PostalCode || '',
-                        // CreatedDate was never returned from Apex, removed
                         CaseSummaryTooltip: caseTooltip,
                         Cases: acc.Cases || [],
                         isHovered: false
                     };
                 });
 
+                console.log(`✅ ${this.accounts.length} account(s) mapped.`);
                 this.noResults = this.accounts.length === 0;
             })
             .catch(error => {
-                console.error('Error fetching accounts:', error);
+                console.error('❌ Error fetching accounts from Apex:', error);
                 this.accounts = [];
                 this.noResults = true;
             });
@@ -72,40 +74,36 @@ export default class WoonstadCustomerSearch extends LightningElement {
 
     // Show tooltip on hover
     handleMouseEnter(event) {
-    const hoveredId = event.currentTarget.dataset.id;
-    this.hoveredAccountId = hoveredId;
+        const hoveredId = event.currentTarget.dataset.id;
+        this.hoveredAccountId = hoveredId;
 
-    // Update hover state
-    this.accounts = this.accounts.map(acc => ({
-        ...acc,
-        isHovered: acc.Id === hoveredId
-    }));
+        this.accounts = this.accounts.map(acc => ({
+            ...acc,
+            isHovered: acc.Id === hoveredId
+        }));
 
-    // Delay to wait for the tooltip to render
-    setTimeout(() => {
-        const wrapper = this.template.querySelector(`div[data-id="${hoveredId}"]`);
-        const tooltip = wrapper?.querySelector('.case-tooltip-extended');
+        setTimeout(() => {
+            const wrapper = this.template.querySelector(`div[data-id="${hoveredId}"]`);
+            const tooltip = wrapper?.querySelector('.case-tooltip-extended');
 
-        if (tooltip && wrapper) {
-            // Reset existing classes
-            tooltip.classList.remove('above', 'below');
+            if (tooltip && wrapper) {
+                tooltip.classList.remove('above', 'below');
 
-            const wrapperRect = wrapper.getBoundingClientRect();
-            const tooltipHeight = tooltip.offsetHeight;
-            const buffer = 20; // Minimum space needed
+                const wrapperRect = wrapper.getBoundingClientRect();
+                const tooltipHeight = tooltip.offsetHeight;
+                const buffer = 20;
 
-            const spaceAbove = wrapperRect.top;
-            const spaceBelow = window.innerHeight - wrapperRect.bottom;
+                const spaceAbove = wrapperRect.top;
+                const spaceBelow = window.innerHeight - wrapperRect.bottom;
 
-            // Determine placement
-            if (spaceAbove > tooltipHeight + buffer) {
-                tooltip.classList.add('above');
-            } else {
-                tooltip.classList.add('below');
+                if (spaceAbove > tooltipHeight + buffer) {
+                    tooltip.classList.add('above');
+                } else {
+                    tooltip.classList.add('below');
+                }
             }
-        }
-    }, 50); // slight delay to allow rendering
-}
+        }, 50);
+    }
 
     handleMouseLeave() {
         this.hoveredAccountId = null;
@@ -115,11 +113,14 @@ export default class WoonstadCustomerSearch extends LightningElement {
         }));
     }
 
-    // Open Account in new tab
+    // Open the modal woonstadCustomerOverview
     handleAccountClick(event) {
         const accountId = event.currentTarget.dataset.id;
+        console.log('➡️ Dispatching showoverview event for AccountId:', accountId);
         if (accountId) {
-            window.open(`/lightning/r/Account/${accountId}/view`, '_blank');
+            this.dispatchEvent(new CustomEvent('showoverview', {
+                detail: { accountId }
+            }));
         }
         this.closeModal();
     }
@@ -136,6 +137,7 @@ export default class WoonstadCustomerSearch extends LightningElement {
 
     // Utility to close modal
     closeModal() {
+        console.log('❎ Closing search modal');
         this.dispatchEvent(new CustomEvent('close'));
         const backdrops = document.querySelectorAll('.slds-backdrop.slds-backdrop_open');
         if (backdrops.length > 1) {

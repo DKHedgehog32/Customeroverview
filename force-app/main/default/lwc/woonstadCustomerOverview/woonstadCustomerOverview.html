@@ -1,0 +1,77 @@
+<template>
+    <div class="woonstad-overview-root">
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open woonstad-modal">
+            <div class="slds-modal__container woonstad-modal-container">
+
+                <!-- Modal Header -->
+                <header class="slds-modal__header overview-header">
+                    <div class="header-branding">
+                        <img src={logoUrl} alt="Woonstad Rotterdam Logo" class="logo-left" />
+                        <h2 class="overview-title">Klantoverzicht</h2>
+                    </div>
+                </header>
+
+                <!-- Info Bar -->
+                <template if:true={account}>
+                    <div class="account-horizontal-bar">
+                        <div><strong>Naam:</strong> {account.Name}</div>
+                        <div><strong>Geboortedatum:</strong> {account.PersonBirthdate}</div>
+                        <div><strong>Telefoon:</strong> {account.Phone}</div>
+                        <div><strong>Mobiel:</strong> {account.PersonMobilePhone}</div>
+                        <div><strong>IBAN:</strong> *{customerData.IBAN_Last4}</div>
+                        <div><strong>Adres:</strong> {customerData.PrimaryStreet}</div>
+                        <div><strong>Postcode:</strong> {customerData.PrimaryPostalCode}</div>
+                    </div>
+                </template>
+
+                <!-- Content -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={isLoading}>
+                        <div class="spinner-container">
+                            <lightning-spinner alternative-text="Laden..." size="small"></lightning-spinner>
+                        </div>
+                    </template>
+
+                    <template if:true={account}>
+                        <div class="tile-container">
+                            <div class="tile" onclick={openCasesModal}>
+                                <h3>Zaken ({cases.length})</h3>
+                            </div>
+                            <div class="tile" onclick={toggleAddresses}>
+                                <h3>Adressen ({addresses.length})</h3>
+                            </div>
+                            <div class="tile" onclick={toggleBankAccounts}>
+                                <h3>Bankrekeningen ({bankAccounts.length})</h3>
+                            </div>
+                            <div class="tile" onclick={toggleContracts}>
+                                <h3>Contracten ({contracts.length})</h3>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template if:true={error}>
+                        <p class="error-message">Fout bij het laden van klantgegevens: {error.message}</p>
+                    </template>
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Sluiten" onclick={handleClose}></lightning-button>
+                </footer>
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+
+        <!-- ✅ Case Modal (secondary modal inside this component) -->
+       <template if:true={showCasesModal}>
+    <c-woonstad-case-modal
+        account={account}
+        addresses={addresses}
+        bank-accounts={bankAccounts}
+        cases={cases}
+        onclose={closeCasesModal}>
+    </c-woonstad-case-modal>
+</template>
+    </div>
+</template>

@@ -1,0 +1,133 @@
+/* Full screen blur background */
+.woonstad-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10010;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Modal container centered */
+.modal-container {
+    background-color: white;
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal header styling */
+.modal-header {
+    background-color: #0061cd;
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.modal-header img {
+    height: 40px;
+}
+
+.modal-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    flex: 1;
+    text-align: center;
+}
+
+/* NEW: Button container below header */
+.new-case-button-container {
+    text-align: right;
+    padding: 1rem 2rem 0 2rem;
+    background-color: #ffffff;
+}
+
+/* Case content styling */
+.case-list {
+    padding: 1.5rem 2rem;
+    overflow-y: auto;
+    flex-grow: 1;
+    background-color: #ffffff;
+}
+
+.case-card {
+    background-color: #f7f9fc;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.case-reason {
+    font-weight: bold;
+    color: #0070d2;
+    margin-bottom: 0.5rem;
+}
+
+.case-subject {
+    color: #0050a0;
+    text-decoration: underline;
+}
+
+/* Modal footer */
+.modal-footer {
+    padding: 1rem 2rem;
+    background-color: #f4f6f9;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* FLOW MODAL SIZING (auto resize based on flow content) */
+.slds-modal__container {
+    max-width: 90vw !important;
+    width: auto !important;
+}
+
+/* FLOW MODAL OVERRIDE */
+.flow-modal-backdrop {
+    position: fixed;
+    z-index: 10020;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(12px);
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flow-modal {
+    background-color: #fff;
+    border-radius: 1rem;
+    max-height: 90vh;
+    max-width: 90vw;
+    width: auto;
+    overflow: auto;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+.flow-body {
+    padding: 1.5rem 2rem;
+    background-color: #ffffff;
+    overflow-y: auto;
+}

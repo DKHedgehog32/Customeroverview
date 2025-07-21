@@ -25,16 +25,28 @@
         </div>
     </div>
 
-    <!-- Modal: Zoek naar klanten -->
-    <template if:true={showCustomerSearchModal}>
-        <c-woonstad-customer-search oncreatenew={handleCreateNew} onclose={closeCustomerSearchModal}></c-woonstad-customer-search>
-    </template>
+ <!-- Modal: Zoek naar klanten -->
+<template if:true={showCustomerSearchModal}>
+    <c-woonstad-customer-search 
+        oncreatenew={handleCreateNew} 
+        onclose={closeCustomerSearchModal}
+        onshowoverview={handleShowCustomerOverview}>
+    </c-woonstad-customer-search>
+</template>
 
-    <!-- Modal: Nieuwe klant aanmaken wizard -->
-    <template if:true={showCreateCustomerWizardModal}>
-        <c-woonstad-create-customer-wizard 
-    onclose={closeCreateCustomerWizardModal}
-    onback={handleBackToCustomerSearch}>
-</c-woonstad-create-customer-wizard>
-    </template>
+<!-- Modal: Nieuwe klant aanmaken wizard -->
+<template if:true={showCreateCustomerWizardModal}>
+    <c-woonstad-create-customer-wizard 
+        onclose={closeCreateCustomerWizardModal}
+        onback={handleBackToCustomerSearch}>
+    </c-woonstad-create-customer-wizard>
+</template>
+
+<!-- Modal: Klantoverzicht -->
+<template if:true={showCustomerOverviewModal}>
+    <c-woonstad-customer-overview 
+        record-id={selectedAccountId}
+        onclose={closeCustomerOverviewModal}>
+    </c-woonstad-customer-overview>
+</template>
 </template>

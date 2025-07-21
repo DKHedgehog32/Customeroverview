@@ -1,0 +1,105 @@
+/* === MODAL CONTAINER === */
+.woonstad-overview-root .slds-modal__container.woonstad-modal-container {
+    width: 2500px;         /* Fixed width */
+    max-width: 95vw;       /* Responsive fallback */
+    height: 900px;         /* Fixed height */
+    max-height: 90vh;      /* Prevents overflow on short screens */
+    overflow: hidden;      /* No scroll, fixed height */
+    display: flex;
+    flex-direction: column;
+}
+
+/* === HEADER (Blue Top Bar) === */
+.woonstad-overview-root .overview-header {
+    background-color: #0061cd;
+    padding: 1rem 2rem 0.5rem 2rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.woonstad-overview-root .header-branding {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.woonstad-overview-root .logo-left {
+    position: absolute;
+    left: 0;
+    height: 30px;
+}
+
+.woonstad-overview-root .overview-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}
+
+/* === INFO BAR (Blue Bar Connected to Header) === */
+.woonstad-overview-root .account-horizontal-bar {
+    background-color: #0061cd;
+    color: white;
+    padding: 0.5rem 2rem 1rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem 2rem;
+    border-radius: 0 0 0.5rem 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 0;
+}
+
+/* === TILE CONTAINER === */
+.woonstad-overview-root .tile-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.woonstad-overview-root .tile {
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    flex: 1 1 200px;
+    min-width: 200px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.woonstad-overview-root .tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.woonstad-overview-root .tile h3 {
+    color: #3f6f8f;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+/* === SPINNER === */
+.woonstad-overview-root .spinner-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* === ERROR MESSAGE === */
+.woonstad-overview-root .error-message {
+    color: darkred;
+    font-weight: bold;
+    margin-top: 1rem;
+}
