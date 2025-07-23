@@ -1,4 +1,4 @@
-/* Full screen blur background */
+/* ===== Overlay Background ===== */
 .woonstad-modal-overlay {
     position: fixed;
     top: 0;
@@ -13,24 +13,26 @@
     justify-content: center;
 }
 
-/* Modal container centered */
-.modal-container {
+/* ===== Main Modal Containers ===== */
+.modal-container,
+.modal-flow-container {
     background-color: white;
     border-radius: 1rem;
-    width: 90%;
-    max-width: 700px;
-    max-height: 90vh;
+    width: 96%;
+    max-width: 5000px;
+    max-height: 95vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    height: auto;
 }
 
-/* Modal header styling */
+/* ===== Header ===== */
 .modal-header {
     background-color: #0061cd;
     color: white;
-    padding: 1.5rem;
+    padding: 1.5rem 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -49,14 +51,24 @@
     text-align: center;
 }
 
-/* NEW: Button container below header */
+/* ===== Footer ===== */
+.modal-footer {
+    padding: 1rem 2rem;
+    background-color: #f4f6f9;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ===== New Case Button ===== */
 .new-case-button-container {
     text-align: right;
     padding: 1rem 2rem 0 2rem;
     background-color: #ffffff;
 }
 
-/* Case content styling */
+/* ===== Case List ===== */
 .case-list {
     padding: 1.5rem 2rem;
     overflow-y: auto;
@@ -81,53 +93,270 @@
 .case-subject {
     color: #0050a0;
     text-decoration: underline;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
-/* Modal footer */
-.modal-footer {
-    padding: 1rem 2rem;
+/* ===== Tooltip Visibility Control ===== */
+.knowledge-card:hover .knowledge-tooltip {
+    display: block;
+}
+
+.knowledge-tooltip {
+    display: none;
+}
+
+/* ===== Three-Panel Flow Layout ===== */
+.flow-three-panel-layout {
+    display: flex;
     background-color: #f4f6f9;
-    border-bottom-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
-    display: flex;
-    justify-content: flex-end;
+    align-items: stretch;
+    flex-grow: 1;
+    height: 100%;
+    overflow: hidden;
 }
 
-/* FLOW MODAL SIZING (auto resize based on flow content) */
-.slds-modal__container {
-    max-width: 90vw !important;
-    width: auto !important;
-}
-
-/* FLOW MODAL OVERRIDE */
-.flow-modal-backdrop {
-    position: fixed;
-    z-index: 10020;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    backdrop-filter: blur(12px);
-    background-color: rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.flow-modal {
-    background-color: #fff;
-    border-radius: 1rem;
-    max-height: 90vh;
-    max-width: 90vw;
-    width: auto;
-    overflow: auto;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+.side-panel {
+    min-width: 1000px;
+    max-width: 1200px;
+    background-color: #f4f6f9;
+    padding: 1.2rem;
     display: flex;
     flex-direction: column;
+    gap: 1.2rem;
+    overflow-y: auto;
+    flex-shrink: 0;
+    flex-grow: 1;
 }
 
-.flow-body {
-    padding: 1.5rem 2rem;
+.panel-section {
     background-color: #ffffff;
+    border-radius: 0.75rem;
+    padding: 1.25rem 2rem;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    max-width: 100%;
+}
+
+.panel-section h2 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    color: #3f6f8f;
+}
+
+/* ===== Flow Panel Area ===== */
+.flow-panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f6f9;
+    padding: 1.2rem;
+    height: auto;
+    align-self: stretch;
+}
+
+.flow-panel .panel-section {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #ffffff;
+    height: 100%;
+    min-height: 100%;
+}
+
+.flow-panel lightning-flow {
+    flex: 1;
+    min-height: 100px;
+    height: 100% !important;
+    overflow: hidden !important;
+}
+
+.flow-panel lightning-flow * {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+}
+
+.flow-panel hr,
+.flow-panel .slds-modal__footer,
+.flow-panel .slds-clearfix,
+.flow-panel div[style*="border-top"],
+.flow-panel lightning-flow::part(flow-container) hr {
+    display: none !important;
+    border: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.flow-panel div[style*="box-shadow"],
+.flow-panel div[style*="border-radius"] {
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+.flow-panel lightning-flow::part(flow-container) {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* ===== Account Info Grid ===== */
+.account-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 1.5rem;
+    row-gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.account-info-grid div {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.account-info-grid div strong {
+    color: #3f6f8f;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+/* ===== Knowledge Search UI ===== */
+.knowledge-search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    background-color: #f4f6f9;
+    box-shadow: 0 2px 6px rgba(0, 97, 205, 0.2);
+    margin-bottom: 1rem;
+}
+
+.knowledge-search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #3f6f8f;
+    flex: 1;
+}
+
+.search-button {
+    border: none;
+    background: #b2f0ff;
+    border-radius: 50%;
+    padding: 0.5rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+    box-shadow: 0px 4px 8px rgba(0, 97, 205, 0.3);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.search-button:hover {
+    transform: scale(1.05);
+}
+
+.search-icon {
+    --slds-c-icon-color-foreground-default: #003e7e;
+    font-size: 1.1rem;
+}
+
+/* ===== Knowledge Result Cards ===== */
+.knowledge-results {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.knowledge-card {
+    background-color: #f7f9fc;
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.2s;
+    cursor: pointer;
+    position: relative;
+}
+
+.knowledge-card:hover {
+    background-color: #e9f4ff;
+}
+
+.knowledge-card-title {
+    font-weight: bold;
+    color: #0061cd;
+    margin-bottom: 0.5rem;
+}
+
+/* ===== Tooltip Container ===== */
+.tooltip-container {
+    position: relative;
+}
+
+/* ===== Tooltip Box ===== */
+.knowledge-tooltip {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10020;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    width: 550px;
+    max-height: 300px;
     overflow-y: auto;
+    color: #3f6f8f;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+.knowledge-tooltip p {
+    margin-bottom: 0.75rem;
+    overflow-wrap: break-word;
+    max-height: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.knowledge-tooltip strong {
+    display: block;
+    color: #0061cd;
+    margin-bottom: 0.25rem;
+}
+
+/* ===== Responsive Behavior ===== */
+@media screen and (max-width: 1024px) {
+    .account-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .side-panel {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .flow-three-panel-layout {
+        display: flex;
+        background-color: #f4f6f9;
+        align-items: stretch;
+        flex-grow: 1;
+        min-height: 100%;
+        overflow: hidden;
+    }
 }

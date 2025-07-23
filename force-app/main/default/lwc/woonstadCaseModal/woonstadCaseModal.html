@@ -1,10 +1,12 @@
 <template>
+    <!-- CASE MODAL -->
     <div class="woonstad-modal-overlay">
-        <div class="modal-container">
+        <div class="modal-container modal-case">
             <!-- HEADER -->
             <header class="modal-header">
                 <img src={logoUrl} alt="Woonstad Rotterdam Logo" />
                 <div class="modal-title">Cases ({cases.length})</div>
+                <lightning-button-icon icon-name="utility:close" variant="bare" onclick={handleClose}></lightning-button-icon>
             </header>
 
             <!-- BUTTON -->
@@ -37,30 +39,116 @@
         </div>
     </div>
 
-    <!-- FLOW MODAL -->
+    <!-- FLOW MODAL WITH 3 PANELS -->
     <template if:true={showFlowModal}>
-        <section class="flow-modal-backdrop">
-            <div class="flow-modal">
-                <!-- FLOW HEADER -->
-                <header class="modal-header flow-header">
+        <div class="woonstad-modal-overlay">
+            <div class="modal-flow-container modal-nieuwe-zaak">
+                <!-- HEADER -->
+                <header class="modal-header">
                     <img src={logoUrl} alt="Woonstad Rotterdam Logo" />
-                    <div class="modal-title">Nieuwe Zaak</div>
+                    <div class="modal-title">Nieuwe Zaak aanmaken</div>
+                    <lightning-button-icon icon-name="utility:close" variant="bare" onclick={closeFlowModal}></lightning-button-icon>
                 </header>
 
-                <!-- FLOW BODY -->
-                <div class="flow-body">
-                    <lightning-flow
-                        flow-api-name="Screen_Flow_Create_New_Request_Case"
-                        flow-input-variables={flowInput}
-                        onstatuschange={handleFlowStatusChange}>
-                    </lightning-flow>
+                <!-- THREE-PANEL LAYOUT -->
+                <div class="flow-three-panel-layout">
+                    <!-- LEFT PANEL -->
+                    <div class="side-panel">
+                        <div class="panel-section">
+                            <h2>Account informatie</h2>
+                            <template if:true={account}>
+                                <div class="account-info-grid">
+                                    <div><strong>Naam:</strong> {account.Name}</div>
+                                    <div><strong>Geboortedatum:</strong> {account.PersonBirthdate}</div>
+                                    <div><strong>Telefoon:</strong> {account.Phone}</div>
+                                    <div><strong>Mobiel:</strong> {account.PersonMobilePhone}</div>
+                                    <div><strong>IBAN:</strong> *{customerData.IBAN_Last4}</div>
+                                    <div><strong>Adres:</strong> {customerData.PrimaryStreet}</div>
+                                    <div><strong>Postcode:</strong> {customerData.PrimaryPostalCode}</div>
+                                </div>
+                            </template>
+                            <template if:false={account}>
+                                <p>Geen accountinformatie beschikbaar.</p>
+                            </template>
+                        </div>
+
+                        <!-- Knowledge Base Panel -->
+                        <div class="panel-section">
+                            <h2>Kennisbank</h2>
+                            <div class="knowledge-search-container">
+                                <input
+                                    type="text"
+                                    class="knowledge-search-input"
+                                    placeholder="Zoek kennisartikelen..."
+                                    value={knowledgeSearchTerm}
+                                    oninput={handleSearchTermChange}
+                                    onkeydown={handleKeyDown}
+                                />
+                                <button class="search-button" onclick={handleSearchClick}>
+                                    <lightning-icon icon-name="utility:search" size="x-small" class="search-icon"></lightning-icon>
+                                </button>
+                            </div>
+
+                            <template if:true={knowledgeResults}>
+                                <ul class="knowledge-results">
+                                    <template for:each={knowledgeResults} for:item="article" for:index="index">
+                                        <li key={article.knowledgeArticleId}
+                                            class="knowledge-card tooltip-container"
+                                            data-article-id={article.knowledgeArticleId}
+                                            data-index={index}
+                                            onmouseenter={handleTooltipEnter}
+                                            onmouseleave={handleTooltipLeave}>
+                                            
+                                            <div class="knowledge-card-title">{article.question}</div>
+
+                                            <template if:true={article.isHovered}>
+                                                <div class="knowledge-tooltip">
+                                                    <div class="tooltip-section">
+                                                        <strong>Vraag:</strong>
+                                                        <div class="tooltip-text">{article.question}</div>
+                                                    </div>
+                                                    <div class="tooltip-section">
+                                                        <strong>Antwoord:</strong>
+                                                        <div class="tooltip-text">{article.answer}</div>
+                                                    </div>
+                                                    <template if:true={article.instruction}>
+                                                        <div class="tooltip-section">
+                                                            <strong>Werkinstructie:</strong>
+                                                            <div class="tooltip-text">{article.instruction}</div>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </template>
+
+                            <template if:true={searched}>
+                                <template if:false={knowledgeResults.length}>
+                                    <p class="knowledge-no-results">Geen kennisartikelen gevonden.</p>
+                                </template>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT PANEL / FLOW SECTION -->
+                    <div class="flow-panel">
+                        <div class="panel-section">
+                            <lightning-flow
+                                flow-api-name="Screen_Flow_Create_New_Request_Case"
+                                flow-input-variables={flowInput}
+                                onstatuschange={handleFlowStatusChange}>
+                            </lightning-flow>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- FLOW FOOTER -->
+                <!-- FOOTER -->
                 <footer class="modal-footer">
                     <lightning-button variant="neutral" label="Annuleer" onclick={closeFlowModal}></lightning-button>
                 </footer>
             </div>
-        </section>
+        </div>
     </template>
 </template>

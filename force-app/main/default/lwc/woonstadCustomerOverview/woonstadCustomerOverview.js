@@ -15,28 +15,35 @@ export default class WoonstadCustomerOverview extends LightningElement {
     @track showBankAccounts = false;
     @track showContracts = false;
 
-    @track showCasesModal = false; // ✅ new modal toggle state
+    @track showCasesModal = false;
 
     connectedCallback() {
         if (this.recordId) {
+            console.log('🔄 Connected with recordId:', this.recordId);
             this.loadCustomerData();
+        } else {
+            console.warn('⚠️ Geen recordId beschikbaar bij initialisatie.');
         }
     }
 
     loadCustomerData() {
         this.isLoading = true;
+        console.log('📡 Ophalen klantgegevens voor recordId:', this.recordId);
 
         getCustomerOverview({ accountId: this.recordId })
             .then(result => {
+                console.log('✅ Gegevens opgehaald:', JSON.stringify(result, null, 2));
                 this.customerData = result;
                 this.error = null;
             })
             .catch(err => {
+                console.error('❌ Fout bij ophalen klantgegevens:', err);
                 this.error = err;
                 this.customerData = null;
             })
             .finally(() => {
                 this.isLoading = false;
+                console.log('✅ Ophalen klantgegevens afgerond. isLoading = false');
             });
     }
 
@@ -46,15 +53,26 @@ export default class WoonstadCustomerOverview extends LightningElement {
     toggleContracts = () => this.showContracts = !this.showContracts;
 
     openCasesModal() {
+        console.log('📂 Opening case modal...');
+        console.log('📌 Account:', this.account);
+        console.log('📌 Addresses:', this.addresses);
+        console.log('📌 BankAccounts:', this.bankAccounts);
+        console.log('📌 Cases:', this.cases);
+
         this.showCasesModal = true;
     }
 
     closeCasesModal() {
+        console.log('❌ Closing case modal');
         this.showCasesModal = false;
     }
 
     get account() {
-        return this.customerData?.account;
+        const acc = this.customerData?.account;
+        if (!acc) {
+            console.warn('⚠️ Geen accountinformatie beschikbaar in customerData.');
+        }
+        return acc;
     }
 
     get addresses() {
@@ -74,8 +92,7 @@ export default class WoonstadCustomerOverview extends LightningElement {
     }
 
     handleClose() {
+        console.log('🔙 Sluiten van klantoverzicht component');
         this.dispatchEvent(new CustomEvent('close'));
     }
-
-    // Removed console logging and debugging
 }
